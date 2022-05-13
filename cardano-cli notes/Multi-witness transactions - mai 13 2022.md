@@ -26,32 +26,46 @@ Make sure you have credits on each acddress, use [faucet](https://testnets.carda
 
 Check the UTXOs availables in those Address. 
 
+##### Checking Address 1:
 ```bash
 cardano-cli query utxo --address $(cat paymentAddress1.addr) $TESTNET
 ```
 
-response should be like this [^1].
+response should be like this: [^1]
 ```bash
         TxHash                    TxIx        Amount
 ----------------------------------------------------------------------------------
 a4f6fe6d3cd39ee15f.....69c75602     0        200000000 lovelace + TxOutDatumNone
 ```
 
+^dd57bc
+
+##### Checking Address 2:
 ```bash
 cardano-cli query utxo --address $(cat paymentAddress2.addr) $TESTNET
 ```
 
-[^1]: My reference.
+response should be like this: [^1] 
+```bash
+     TxHash                        TxIx        Amount
+-------------------------------------------------------------------------------
+50861ba5d63f02.....ade3a55d9b930     0        1000000000 lovelace + TxOutDatumNone
 
+```
+
+[^1]: The '...' within the transaction hash `TxHash` is for shortener purposes.
 
 ### 2. Build a transaction
-
 In order to simplify next commands we will create some environment variables 
 
-The first one is to store the UTXO we will use comming from the first address we create.
+The first variable will store the transaction hash (`TxHash`) of the first Address, get it  [[Multi-witness transactions - mai 13 2022#^dd57bc|from this response]]
+
+
+
 ```bash
 export UTXO01=a4f6fe6d3cd39ee15f077d6dfac88052f293a7a0385505f0d1b2b28769c75602#0
 ```
+then do the same with thew UTXO from the second Address
 
 
 javingka@javingka-B450-AORUS-ELITE:~/cardano-src/keys/test05$ export ROBERTO_ADD=addr_test1qq5wgtqtjfmr4hmnxn3k5wwkdfwm8qf2t9mxma7xzs86uyr8w89hqrqk8rw56693xzapg0f2fqs2kdph20xgm79a3cqs820z0f
