@@ -53,32 +53,44 @@ response should be like this: [^1]
 
 [^1]: The '...' within the transaction hash `TxHash` is for shortener purposes.
 
-### 2. Build a transaction
+### 2. Set up environment variables
 In order to simplify next commands we will create some environment variables 
 
-The first variable will store the transaction hash (`TxHash`) of the first Address, notice the format is <TxHash>#<TxIx>   [[Multi-witness transactions - mai 13 2022#^dd57bc|from this response]]
-
+The first variable will store the transaction hash (`TxHash`) and transaction index (`TxIx`) of the first Address, notice the format is {TxHash}#{TxIx}
 
 ```bash
-export UTXO01=a4f6fe6d3cd39ee15f077d6dfac88052f293a7a0385505f0d1b2b28769c75602#0
+export UTXO01=a4f6fe6d3cd39ee15f.....69c75602#0
 ```
+
 then do the same with thew UTXO from the second Address
 
+```bash
+export UTXO02=50861ba5d63f02.....ade3a55d9b930#0
+```
 
-javingka@javingka-B450-AORUS-ELITE:~/cardano-src/keys/test05$ export ROBERTO_ADD=addr_test1qq5wgtqtjfmr4hmnxn3k5wwkdfwm8qf2t9mxma7xzs86uyr8w89hqrqk8rw56693xzapg0f2fqs2kdph20xgm79a3cqs820z0f
+Also you can set the Address of the recipient of the transaction as an environment variable, in this case I am using Roberto's Address
 
-build a transaction with 2 utxo
+```bash
+export ROBERTO_ADDR=addr_test1qq5wgtqtjfmr4hmnxn3k5....ph20xgm79a3cqs820z0f
+```
+
+### 3. Build a transaction
+build a transaction with the 2 UTXOs
+
 ```bash
 cardano-cli transaction build \
 --tx-in $UTXO01 \
 --tx-in $UTXO02 \
---change-address $ROBERTO_ADD \
+--change-address $ROBERTO_ADDR \
 --witness-override 2 \
 --out-file tx_multi_UTXO.unsigned \
 $TESTNET
 ```
 
-build witness keys
+We use `tx_multi_UTXO.unsigned` as the name of the file storing the data of the new **unsigned** transaction
+
+### 4. Build witness keys
+
 ```bash
 cardano-cli transaction witness \
 --signing-key-file paymentAdd1.skey \
@@ -93,7 +105,8 @@ cardano-cli transaction witness \
 --out-file paymentAdd2.witness
 ```
 
-assemble transaction
+### 5. Assemble transaction
+We assemble the `tx_multi_UTXO.unsigned` transaction using the previous witness key hashes
 
 ```bash
 cardano-cli transaction assemble \
@@ -102,6 +115,10 @@ cardano-cli transaction assemble \
 --witness-file paymentAdd2.witness \
 --out-file tx_multi_UTXO.signed
 ```
+
+We use `tx_multi_UTXO.signed` as the name of the file storing the data of the new **signed** transaction
+
+### 6. Submit the transaction
 
 ```bash
 cardano-cli transaction submit \
