@@ -38,8 +38,6 @@ response should be like this: [^1]
 a4f6fe6d3cd39ee15f.....69c75602     0        200000000 lovelace + TxOutDatumNone
 ```
 
-^dd57bc
-
 ##### Checking Address 2:
 ```bash
 cardano-cli query utxo --address $(cat paymentAddress2.addr) $TESTNET
@@ -58,8 +56,7 @@ response should be like this: [^1]
 ### 2. Build a transaction
 In order to simplify next commands we will create some environment variables 
 
-The first variable will store the transaction hash (`TxHash`) of the first Address, get it  [[Multi-witness transactions - mai 13 2022#^dd57bc|from this response]]
-
+The first variable will store the transaction hash (`TxHash`) of the first Address, notice the format is <TxHash>#<TxIx>   [[Multi-witness transactions - mai 13 2022#^dd57bc|from this response]]
 
 
 ```bash
