@@ -1,5 +1,3 @@
-[link to crresponding post on developers.cardano platform](https://developers.cardano.org/docs/integrate-cardano/multi-witness-transactions-cli)
-
 ### 1. Build 2 Addresses
 
 ```bash

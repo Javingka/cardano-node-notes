@@ -1,5 +1,3 @@
-mai 10 2022
-
 Several commands used here will call a Environment Variable named `$TESTNET`. it's essential such variable exists on ~/.bashrc file as follows:
 ```bash
 export TESTNET="--testnet-magic 1097911063"
@@ -66,7 +64,7 @@ cardano-cli address key-hash \
 ### 3. Create a script file
 Next we created a script file with the following text, we will name the file as `multisignpolicy.script`.
 
-Here we use the hashes created on previous step, meaning you have to use the hash values stored in `KEY_HASH_ADD_1.hkey`, `KEY_HASH_ADD_2.hkey` and `KEY_HASH_ADD_3.hkey` files
+Here we use the hashes created on previous step, meaning you have to use the hash values stored in `KEY_HASH_ADD_1.hkey`, `KEY_HASH_ADD_2.hkey` and `KEY_HASH_ADD_3.hkey` files[^1]
 
 ```json
 {
@@ -88,9 +86,10 @@ Here we use the hashes created on previous step, meaning you have to use the has
         ]
 }
 ```
-**Mind the format of the JSON file.  I.e. use of capital letters,  ':',  ', ' etc**
+[^1]: Mind the format of the JSON file.  I.e. use of capital letters,  ':',  ', ' etc
 
-In the code above the `<KEY_HASH_ADD_1.hkey>`  strings should be replaced with the actual hash found in the files of the same name.
+
+In the code above the `<KEY_HASH_ADD_1.hkey>`   should be replaced with the actual hash found in the files of the same name.
 
 ### 4. Create an Account address for the script
 Then, we will create an account from the script.
@@ -105,11 +104,16 @@ $TESTNET
 We use `multisignaddress.addr` as the name of the file storing the address hash
 
 ### 5. Credit the address
-Go to faucet and send credits to the new multisignaddress Address https://testnets.cardano.org/en/testnets/cardano/tools/faucet/
+Go to [faucet](https://testnets.cardano.org/en/testnets/cardano/tools/faucet/) and send credits to the new multisignaddress Address 
 
 ### 6. Setup a transaction
-We will send a utxo to Roberto addresss account: `addr_test1qp5h55qm05zhv6eapr3em26rurchp9eaxwvt9p69kwuvu42rj9ynfzwggc0s55nlpqegv90w2rshnqf0q3um5pytk4qqutq8j6`  
-( but this could also be sent to the 4th account created before)
+We will send a utxo to Roberto addresss account: 
+
+```bash
+export ROBERTO_ADDR=addr_test1qp5h55qm05zhv6eapr3em26rurchp9eaxwvt9p69kwuvu42rj9ynfzwggc0s55nlpqegv90w2rshnqf0q3um5pytk4qqutq8j6
+```
+
+The account hash is stored into a Environment variable to simplify the next command call ( The transaction could also be sent to the 4th account created before)
 
 Build the transaction:
 ```bash
@@ -121,18 +125,21 @@ cardano-cli transaction build \
 --out-file txmultisign.raw \
 $TESTNET
 ```
+
 For `--tx-in` parameter we use the transaction hash from the return of `cardano-cli query utxo --address $(cat multisignaddress.addr) $TESTNET` command. 
+
 In **my** case is: `da5dcaa117e27f324430a5fe2fc32f86cf7ab03f6556800b84e977a6a526b765` 
 
 For `--change-address` parameter, as commented before, we will use Roberto's address.
 
 The transaction raw information will be stored into the file `txmultisign.raw` 
 
-Once executed the command we can view transaction draft calling the following:
+Once executed the command we can view the transaction draft calling the following:
 ```bash
 cardano-cli transaction view \
 --tx-body-file txmultisign.raw
 ```
+
 Response should be something like this:
 ```bash
 auxiliary scripts: null
@@ -163,7 +170,7 @@ withdrawals: null
 ```
 
 ### 7. Witnesses sign the transaction
-Then each of the 3 withnesses sign the transaction
+Then create a key-hash for each of the 3 withnesses that will sign the transaction
 
 ```bash
 cardano-cli transaction witness \
@@ -191,7 +198,8 @@ Notice the `--signing-key-file` and `--out-file` parameters values change on eac
 ### 8. Assamble the transaction
 Now, assemble the transaction.
 
-Roberto gave an example explaining why is it an assamble:
+Roberto use a metaphor for explaining why is it call 'assamble':
+
 >Imagine you have a paper document with 3 sign spaces, and then you send to each guy kind of the same thing, a 'contract'. 
 >
 >They will take the piece of the contract where their signature goes and they gona take that part and put their signature. 
@@ -216,7 +224,7 @@ cardano-cli transaction submit \
 $TESTNET
 ```
 
-Review the founds of the transaction address, it should be empty
+Review the founds of the transaction address, now it should be empty
 ```bash
 cardano-cli query utxo --address $(cat multisignaddress.addr) $TESTNET
 ```
