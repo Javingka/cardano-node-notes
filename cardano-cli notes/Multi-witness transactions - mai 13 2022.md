@@ -20,7 +20,7 @@ cardano-cli address build \
 $TESTNET
 ```
 
-Make sure you have credits on each acddress, use [faucet](https://testnets.cardano.org/en/testnets/cardano/tools/faucet/) to send Ada to one of the Address. Be aware faucet can send only 1 time each 24 hours from the same IP addreess.
+Make sure you have credits on each address, use [faucet](https://testnets.cardano.org/en/testnets/cardano/tools/faucet/) to send Ada to one of the Address. Be aware faucet can send only 1 time each 24 hours from the same IP addreess.
 
 Check the UTXOs availables in those Address. 
 
