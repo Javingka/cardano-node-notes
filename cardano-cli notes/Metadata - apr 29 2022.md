@@ -152,7 +152,7 @@ cardano-cli transaction submit \
 $TESTNET
 ```
 
-### 6.verify 
+### 6.  Verify 
 Calling
 ```bash
 cardano-cli query utxo --address $(cat paymentAddress2.addr) $TESTNET
