@@ -2,14 +2,14 @@
 
 ```bash
 cardano-cli address key-gen \
---verification-key-file paymentAdd2.vkey \
---signing-key-file paymentAdd2.skey
+--verification-key-file paymentAdd1.vkey \
+--signing-key-file paymentAdd1.skey
 ```
 
 ```bash
 cardano-cli stake-address key-gen \
---verification-key-file stakeAdd2.vkey \
---signing-key-file stakeAdd2.skey
+--verification-key-file stakeAdd1.vkey \
+--signing-key-file stakeAdd1.skey
 ```
 
 ```bash
