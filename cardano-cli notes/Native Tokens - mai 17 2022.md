@@ -18,7 +18,7 @@ cardano-cli query protocol-parameters --out-file protocol.params $TESTNET
 
 Store the protocol parameters in the folder you are working on.
 
-### 2. Build 3 Addresses
+### 2. Build 1 Address
 
 ```bash
 cardano-cli address key-gen \
@@ -44,7 +44,7 @@ Write a temporal environment variable to store the address
 ```bash
 Address1=$(cat paymentAddress1.addr)
 ```
-Make sure you have credits on one address, use [faucet](https://testnets.cardano.org/en/testnets/cardano/tools/faucet/) to do so. Be aware faucet can send only 1 time each 24 hours from the same IP addreess.
+Make sure you have credits on the address, use [faucet](https://testnets.cardano.org/en/testnets/cardano/tools/faucet/) to do so. Be aware faucet can send only 1 time each 24 hours from the same IP addreess.
 
 ### 4. Generate the policy
 
@@ -93,7 +93,7 @@ The previous command will generate the following content for the file, `<policy_
 
 ```json
 {
-  "keyHash": "<policy_key_hash>",
+  "keyHash": "<policy/policy.kHash>",
   "type": "sig"
 }
 ```
@@ -109,7 +109,7 @@ The `> policy/policyID` part of the previous command do store the actual policy 
 
 ### 5. Build transaction 
 
-Important to notice in this example the input and output of the transaction will be the same - **our own address**
+Important to notice in this example the input and output of the transaction will be the same - **our own Address1**
 
 
 #### 5.1  Build raw transaction
@@ -127,7 +127,7 @@ response should be like this: [^1]
 ```bash
         TxHash                  TxIx    Amount
 --------------------------------------------------------------------------
-a4f6fe6d3cd39ee15f.....69c75602   0   1000000000 lovelace + TxOutDatumNone
+789bf79422aaaf.....f72831e2f     0   1000000000 lovelace + TxOutDatumNone
 ```
 [^1]: The '...' within the transaction hash `TxHash` is for shortener purposes.
 
@@ -204,7 +204,7 @@ cardano-cli transaction build-raw \
 
 ```bash
 cardano-cli transaction sign  \
---signing-key-file paymentAdd2.skey \
+--signing-key-file paymentAdd1.skey \
 --signing-key-file policy/policy.skey  \
 --tx-body-file batch45ntTX.unsigned  \
 $TESTNET \
