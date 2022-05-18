@@ -42,7 +42,7 @@ Create a file called `metadata.json`  with the following content
 	"2020": {
 		"0730": {
 			"batch": 45,
-			"user": "Javier",
+			"user": "UserName",
 			"dummy": 1,
 			"session": "09"
 		}
