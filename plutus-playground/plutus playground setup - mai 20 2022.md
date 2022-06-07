@@ -56,6 +56,13 @@ Go to your cardano development folder
 git clone https://github.com/input-output-hk/plutus-apps.git
 ```
 
+#### 4.1 For some of the session is necessary to change Git branch
+
+```bash
+git checkout 6aff97d596ac9d59460aab5c65627b1c8c0a1528
+```
+
+
 ### 5. Run Plutus Playground Server
 
 ```bash
