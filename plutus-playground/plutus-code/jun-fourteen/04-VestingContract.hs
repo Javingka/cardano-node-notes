@@ -101,11 +101,13 @@ give gp = do
            (show $ gpBeneficiary gp)
            (show $ gpDeadline gp)
 
+-- utxosAt function (Get the unspent transaction outputs at an address):
+--      https://playground.plutus.iohkdev.io/doc/haddock/plutus-contract/html/Plutus-Contract-Request.html#:~:text=currrency%20(AssetClass).-,utxosAt,-%3A%3A%20forall%20w
 grab :: forall w s e. AsContractError e => Contract w s e ()
 grab = do
     now   <- currentTime
     pkh   <- ownPaymentPubKeyHash
-    utxos <- Map.filter (isSuitable pkh now) <$> utxosAt scrAddress
+    utxos <- Map.filter (isSuitable pkh now) <$> utxosAt scrAddress 
     if Map.null utxos
         then logInfo @String $ "no gifts available"
         else do
