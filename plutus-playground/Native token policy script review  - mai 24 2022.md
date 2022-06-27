@@ -1,4 +1,3 @@
-
 ### 1. Setup playground
 No need to have  the Cardano Node running
 
@@ -11,7 +10,7 @@ git checkout 6aff97d596ac9d59460aab5c65627b1c8c0a1528
 Then repeate the steps:
 
 - [[plutus playground setup - mai 20 2022#5 Run Plutus Playground Server|Run Plutus playground Server]]
-- [[plutus playground setup - mai 20 2022#6 Run Plutus Playground Client|Run plutus playground Client]]
+- [[plutus playground setup - mai 20 2022#6 Run Plutus Playground Client|Run Plutus playground Client]]
 
 
 ### 2. Review Native token and policy Id.

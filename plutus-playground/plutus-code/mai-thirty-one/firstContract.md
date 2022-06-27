@@ -1,3 +1,7 @@
+# Code disection
+
+
+```
 {-# LANGUAGE DataKinds           #-}  --Enable datatype promotions
 {-# LANGUAGE FlexibleContexts    #-}  --Enable flexible contexts. Implied by ImplicitParams
 {-# LANGUAGE NoImplicitPrelude   #-}  --Don't load native prelude to avoid conflict with PlutusTx.Prelude
@@ -6,6 +10,7 @@
 {-# LANGUAGE TypeApplications    #-}  --Allow the use of type application syntax https://gitlab.haskell.org/ghc/ghc/-/wikis/type-application
 {-# LANGUAGE TypeFamilies        #-}  --Allow use and definition of indexed type and data families
 {-# LANGUAGE TypeOperators       #-}  --Allow the use and definition of types with operator names
+```
 
 module OurGift where
 
@@ -30,20 +35,38 @@ import           Text.Printf         (printf)
 
 {-# OPTIONS_GHC -fno-warn-unused-imports #-}
 
+
+## --THE ON-CHAIN CODE
+```haskell
 --THE ON-CHAIN CODE
+```
+The comment point out the following code is supposed to be stored into the blockchain.
 
-{-# INLINABLE alwaysSucceeds #-} -- Everything that its supposed to run in on-chain code need this pragma
-alwaysSucceeds :: BuiltinData -> BuiltinData -> BuiltinData -> ()   -- the value of this function is on its sideeffects
-alwaysSucceeds _ _ _ = () --AlwaysSucceed
+[[alwaysSucceeds|Always Succeeds]]
+```haskell
+{-# INLINABLE alwaysSucceeds #-} 
+alwaysSucceeds :: BuiltinData -> BuiltinData -> BuiltinData -> () 
+alwaysSucceeds _ _ _ = () 
+```
 
+[[validator|Validator]]
+```haskell
 validator :: Validator
-validator = mkValidatorScript $$(PlutusTx.compile [|| alwaysSucceeds ||])  --2nd example change this to alwaysFails
+validator = mkValidatorScript $$(PlutusTx.compile [|| alwaysSucceeds ||])  
+```
 
+```haskell
 valHash :: Ledger.ValidatorHash
-valHash = Scripts.validatorHash validator  -- just the hash of the validator
+valHash = Scripts.validatorHash validator  
+```
 
+a validator hash deliver a key to open the "safe", or to trigger of a transaction
+
+```haskell
 scrAddress :: Ledger.Address
-scrAddress = scriptAddress validator --You apply scriptAddress to the validator and you get the script address on the blockchain
+scrAddress = scriptAddress validato`r
+```
+
 
 {-# INLINABLE alwaysFails #-}
 alwaysFails :: BuiltinData -> BuiltinData -> BuiltinData -> ()   
