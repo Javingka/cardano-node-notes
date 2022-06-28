@@ -10,7 +10,7 @@ This function creates a function called **validator**
 The `$$(...)`  pattern seems to be the encapsulation of a  [[haskell template|haskell template]] execution.
 
 What specific type of [[haskell template|haskell template]] is? 
-	Why double brackets? 
+	Why double brackets? because is the format of Oxford Brackets, 
 
 Anyway, the haskell template is aimed to create code on compiling time. Is meta-programing, code to write code.
 
