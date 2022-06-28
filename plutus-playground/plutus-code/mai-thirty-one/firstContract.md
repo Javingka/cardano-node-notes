@@ -1,7 +1,12 @@
 # Code disection
 
+This file disects the content of the `firstContract.hs` file as an excercise for understanding the code. 
 
-```
+
+### File header 
+The code starts with a series of "pragma" statements to specify some extra-linguistic information to GHC [ref](https://stackoverflow.com/questions/22773699/purpose-of-in-haskell) 
+
+```haskell
 {-# LANGUAGE DataKinds           #-}  --Enable datatype promotions
 {-# LANGUAGE FlexibleContexts    #-}  --Enable flexible contexts. Implied by ImplicitParams
 {-# LANGUAGE NoImplicitPrelude   #-}  --Don't load native prelude to avoid conflict with PlutusTx.Prelude
@@ -11,7 +16,10 @@
 {-# LANGUAGE TypeFamilies        #-}  --Allow use and definition of indexed type and data families
 {-# LANGUAGE TypeOperators       #-}  --Allow the use and definition of types with operator names
 ```
+### Module declaration
 
+Next, the name od the Haskell module and a series of library imports used in the code
+```haskell
 module OurGift where
 
 import           Control.Monad       hiding (fmap)
@@ -32,17 +40,20 @@ import           Playground.TH       (mkKnownCurrencies, mkSchemaDefinitions)
 import           Playground.Types    (KnownCurrency (..))
 import           Prelude             (IO, Semigroup (..), String)
 import           Text.Printf         (printf)
-
 {-# OPTIONS_GHC -fno-warn-unused-imports #-}
+```
 
 
-## --THE ON-CHAIN CODE
+### On Chain code
+
+The following code is supposed to be stored into the blockchain. So it is called "on chain" 
+
 ```haskell
 --THE ON-CHAIN CODE
 ```
-The following code is supposed to be stored into the blockchain.
 
 [[alwaysSucceeds|Always Succeeds]]
+This function will be used to generate a Verificator function aimed to execute a transaction validation (in this case, as the name declare, it will always succeeds)
 ```haskell
 {-# INLINABLE alwaysSucceeds #-} 
 alwaysSucceeds :: BuiltinData -> BuiltinData -> BuiltinData -> () 
@@ -50,6 +61,8 @@ alwaysSucceeds _ _ _ = ()
 ```
 
 [[validator|Validator]]
+This function can be considered as a variable holding the script that should be run on the blockchain.
+The script is wrapet into the `Validator` type.
 ```haskell
 validator :: Validator
 validator = mkValidatorScript $$(PlutusTx.compile [|| alwaysSucceeds ||])  
