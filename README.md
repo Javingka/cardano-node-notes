@@ -3,11 +3,11 @@ This Notes are written using [Obsidian](https://obsidian.md/). Meaning there are
 Cardano-cli notes:
 - [[Address]]
 - [[install-cardano-node]]
-- [[Transactions - apr 22 2022]]
-- [[Metadata - apr 29 2022]]
-- [[Transaction script - mai 10 2022]]
-- [[Multi-witness transactions - mai 13 2022]]
-- [[Native Tokens - mai 17 2022]]
+- [[22 (Friday) Transactions]]
+- [[29 (Friday) Metadata]]
+- [[10  (Tuesday) Transaction script]]
+- [[13 (Friday) Multi-witness transactions]]
+- [[17  (Tuesday) Native Tokens]]
 
 plutus-playground notes:
 - [[plutus playground setup - mai 20 2022]]
