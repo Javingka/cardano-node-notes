@@ -1,6 +1,6 @@
 # Code disection
 
-This file disects the content of the [**firstContract.hs**](../haskell/firstContract.hs) file as an excercise for understanding the code. Notice in Obisidan filer other than ".md" won't be visible.
+This file disects the content of the [**firstContract.hs**](../haskell/firstContract.hs) file as an excercise for understanding the code. Notice in Obisidan files other than ".md" won't be visible.
 
 
 ### File header 
@@ -18,7 +18,7 @@ The code starts with a series of "pragma" statements to specify some extra-lingu
 ```
 ### Module declaration
 
-Next, the name od the Haskell module and a series of library imports used in the code
+Next, the name of the Haskell module and a series of library imports used in the code
 ```haskell
 module OurGift where
 
@@ -73,7 +73,7 @@ valHash :: Ledger.ValidatorHash
 valHash = Scripts.validatorHash validator  
 ```
 
-a validator hash deliver a key to open the "safe", or to trigger of a transaction
+A validator hash is used as a key to open a "safe", to be more accurate is a key used to trigger a transaction
 
 ```haskell
 scrAddress :: Ledger.Address
@@ -87,72 +87,36 @@ alwaysFails _ _ _ = error ()
 ```
 
 ## --THE OFFCHAIN CODE
+
+The following code is supposed to be stored into nodes.
+
 ```haskell
 --THE OFFCHAIN CODE
 ```
-The following code is supposed to be stored into nodes.
 
 ```haskell
 type GiftSchema =
             Endpoint "give" Integer  
         .\/ Endpoint "grab" ()
 ```
-GiftSchema is a type with two possible Endpoint contructors. "give" whose unique parameter is of Integer type, and "grab" who expect nothing.
-() <- is the Unity, kind of a void.
+GiftSchema is a type with two possible contructors (two Endpoints):
+- `"give"` whose unique parameter is of Integer type.
+- `"grab"` who expect nothing. `()` <- is the Unity, kind of a void.
 
 
 ### give
+[[give]] is the function that submits a transaction between an Address giving some lovelace to any other Address who ask for it, for free!
+
 ```haskell
 give :: AsContractError e => Integer -> Contract w s e ()
 give amount = do
     let tx = mustPayToOtherScript valHash (Datum $ Builtins.mkI 0) $ Ada.lovelaceValueOf amount      
     ledgerTx <- submitTx tx                                                                          
     void $ awaitTxConfirmed $ getCardanoTxId ledgerTx                                               
-    logInfo @String $ printf "made a gift of %d lovelace" amount                                     
-```
-give is a function that takes an integer number, representing the amount of lovalece to transact if and inly if the defined contraints are met.
-
-give is what trigger the transaction of giving some value. 
-	what? lovelace. 
-	to whom? to anyone
-	
-`amount` is the amount of a currency, lovelaces.
-
-[mustPayToOtherScript](https://playground.plutus.iohkdev.io/doc/haddock/plutus-ledger-constraints/html/src/Ledger.Constraints.TxConstraints.html#:~:text=key%20address.%0A%20%20%20%20%7C-,MustPayToOtherScript,-ValidatorHash%20Datum%20Value)
-The transaction must create a transaction output with a script address
-```haskell
-    let tx = mustPayToOtherScript valHash (Datum $ Builtins.mkI 0) $ Ada.lovelaceValueOf amount      
+    logInfo @String $ printf "made a gift of %d lovelace" amount
 ```
 
-`mustPayToOtherScript` 
-takes 
-
-1. The hash of the recipient script (the validator function) `valHash`.
-2. A Datum, in this case the datum parameter value is dummy `(Datum $ Builtins.mkI 0)`
-    `Datum` constructor is used to turn Data, in this case the number 0, into a `Datum`. The `Data` is created using `Builtins.mkI` function
-3. A cryptocurrency value, it seems this [value](https://playground.plutus.iohkdev.io/doc/haddock/plutus-ledger-api/html/Plutus-V1-Ledger-Value.html#t:Value) is a dictionary, the key is the currency symbol and the value an amount of such currency
-    In this case the currency symbol is lovelace and the `amount` is an incoming parameter
-
-and delivers
-
-1. A transaction output. a TxConstraints [](https://playground.plutus.iohkdev.io/doc/haddock/plutus-ledger-constraints/html/src/Ledger.Constraints.TxConstraints.html#TxConstraint)
-    "Constraints on transactions that want to spend script outputs"
-
-`ledgerTx <- submitTx tx`
-submit the transaction to the network, remember we are OFFCHAIN, well that is why we need to submit it to go ONCHAIN 
-`submitTx` returns a Cardano Tx,I assume is a Cardano transaction
-
-`getCardanoTxId` 
-    takes the transaction function stored before to be sent to the network
-    returns a [Tx Id](https://playground.plutus.iohkdev.io/doc/haddock/plutus-ledger-api/html/Plutus-V1-Ledger-TxId.html), an identification of a transaction using a SHA256 hash
-
-`awaitTxConfirmed`
-    Wait until a transaction is confirmed (added to the ledger). If the transaction is never added to the ledger then awaitTxConfirmed never returns
-    Returns a Contract
-
-`logInfo @String $ printf "made a gift of %d lovelace" amount`
-    If the "made a gift..." string is printed, the specified amount was actually sent into a transaction and submited to the network.
-
+give takes an `Integer` number representing the `amount` of lovalece to give if the validation is pass (in this case always pass, that is why we call a gift). This function then compile the validation Script into a Transaction Output and submit it to the network.
 
 --- 
 
