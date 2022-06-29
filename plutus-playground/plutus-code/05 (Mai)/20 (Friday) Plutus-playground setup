@@ -1,3 +1,7 @@
+# Plutus Playground 
+
+Steps to setup a local environment
+
 ### 1
 ```bash
 sudo apt-get update

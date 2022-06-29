@@ -1,6 +1,6 @@
 # Code disection
 
-This file disects the content of the `firstContract.hs` file as an excercise for understanding the code. 
+This file disects the content of the [**firstContract.hs**](../haskell/firstContract.hs) file as an excercise for understanding the code. Notice in Obisidan filer other than ".md" won't be visible.
 
 
 ### File header 
