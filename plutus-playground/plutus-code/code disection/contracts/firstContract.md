@@ -1,9 +1,14 @@
 # Code disection
 
-This file disects the content of the [**firstContract.hs**](../haskell/firstContract.hs) file as an excercise for understanding the code. Notice in Obisidan files other than ".md" won't be visible.
+This file disects the content of the [**firstContract.hs**](../haskell/firstContract.hs.md) file as an excercise for understanding the code. 
 
+Mind in Obisidan files other than ".md" won't be visible. So the code referenced before include the '.md' at the end.
 
-### File header 
+This documents contains my understanding on the matter and is supposed to get updated as well as my understanding.
+So probably contains some wrong interpretations.
+
+---
+## File header 
 The code starts with a series of "pragma" statements to specify some extra-linguistic information to GHC [ref](https://stackoverflow.com/questions/22773699/purpose-of-in-haskell) 
 
 ```haskell
@@ -16,7 +21,9 @@ The code starts with a series of "pragma" statements to specify some extra-lingu
 {-# LANGUAGE TypeFamilies        #-}  --Allow use and definition of indexed type and data families
 {-# LANGUAGE TypeOperators       #-}  --Allow the use and definition of types with operator names
 ```
-### Module declaration
+
+---
+## Module declaration
 
 Next, the name of the Haskell module and a series of library imports used in the code
 ```haskell
@@ -43,8 +50,9 @@ import           Text.Printf         (printf)
 {-# OPTIONS_GHC -fno-warn-unused-imports #-}
 ```
 
+---
 
-### On Chain code
+## On Chain code
 
 The following code is supposed to be stored into the blockchain. So it is called "on chain" 
 
@@ -52,6 +60,9 @@ The following code is supposed to be stored into the blockchain. So it is called
 --THE ON-CHAIN CODE
 ```
 
+---
+<div style="text-align: right">  </div>
+### alwaysSucced
 [[alwaysSucceeds|Always Succeeds]]
 This function will be used to generate a Verificator function aimed to execute a transaction validation (in this case, as the name declare, it will always succeeds)
 ```haskell
@@ -59,6 +70,10 @@ This function will be used to generate a Verificator function aimed to execute a
 alwaysSucceeds :: BuiltinData -> BuiltinData -> BuiltinData -> () 
 alwaysSucceeds _ _ _ = () 
 ```
+
+---
+
+### Validator
 
 [[validator|Validator]]
 This function can be considered as a variable holding the script that should be run on the blockchain.
@@ -68,6 +83,9 @@ validator :: Validator
 validator = mkValidatorScript $$(PlutusTx.compile [|| alwaysSucceeds ||])  
 ```
 
+---
+
+### valHash
 ```haskell
 valHash :: Ledger.ValidatorHash
 valHash = Scripts.validatorHash validator  
@@ -80,13 +98,28 @@ scrAddress :: Ledger.Address
 scrAddress = scriptAddress validator
 ```
 
+Address with two kinds of Credentials, normal and staking. [Required to unlock a transaction output](https://playground.plutus.iohkdev.io/doc/haddock/plutus-ledger-api/html/Plutus-V1-Ledger-Credential.html#t:Credential)
+- Credential has two constructors:
+    - PubKeyCredential PubKeyHash        
+        <br>The transaction that spends this output must be signed by the private key
+    - ScriptCredential ValidatorHash        
+        <br>The transaction that spends this output must include the validator script and be accepted by the validator
+
+
+---
+
+### alwaysFails
+Use this function to replace alwaysSucceds in order to make the Contract always fails.
+
 ```haskell
 {-# INLINABLE alwaysFails #-}
 alwaysFails :: BuiltinData -> BuiltinData -> BuiltinData -> ()   
 alwaysFails _ _ _ = error () 
 ```
 
-## --THE OFFCHAIN CODE
+---
+
+##  Off chain code
 
 The following code is supposed to be stored into nodes.
 
@@ -94,15 +127,19 @@ The following code is supposed to be stored into nodes.
 --THE OFFCHAIN CODE
 ```
 
+### GiftSchema
+GiftSchema is a type with two possible contructors (two Endpoints):
+
+- `"give"` whose unique parameter is of Integer type.
+- `"grab"` who expect nothing. `()` <- is the Unity, kind of a void.
+
 ```haskell
 type GiftSchema =
             Endpoint "give" Integer  
         .\/ Endpoint "grab" ()
 ```
-GiftSchema is a type with two possible contructors (two Endpoints):
-- `"give"` whose unique parameter is of Integer type.
-- `"grab"` who expect nothing. `()` <- is the Unity, kind of a void.
 
+---
 
 ### give
 [[give]] is the function that submits a transaction between an Address giving some lovelace to any other Address who ask for it, for free!
@@ -136,9 +173,13 @@ grab = do
     logInfo @String $ "collected gifts"                                                              -- Log information 
 ```
 
-Notice how we start calling information about unspended transactions of a `Ledger.Addres` here with the name of `scrAddress`. Those transactions are scripts, coded to perform a validation, in this specific example the validation will always pass.
+Notice how we start calling information about unspended transactions of an Addrees (of type `Ledger.Addres` ) here with the name of `scrAddress`. 
+
+Those transactions are scripts, coded to perform a validation, in this specific example the validation will always pass.
 
 `let orefs   = fst <$> Map.toList utxos` iterate over the UTXOs getting the values (rememeber the value are maps or dictionaries with currency symbol as a key and the amount of that currency as the value) of each utxo. so `orefs` is a list of mapped currencies ammounts ready to be expended.
+
+---
 
 ### endpoints
 ```haskell
