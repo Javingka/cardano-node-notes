@@ -16,3 +16,5 @@ where are your values and data types lifteds
 
 basically, Values and Types need to be lifted, depends on what Types and What Values are used if it needs or not be lifted. Because Plutus already takes care of some of those values and types.
 
+(10:25) quiestion about NFTs
+                                                
