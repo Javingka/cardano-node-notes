@@ -1,5 +1,5 @@
 # Transaction
-A transaction in Cardano is something that receives an arbitrry number of Unspent Transaction Outputs (UTxO) and deliver a specified number of utcos.
+A transaction in Cardano is something that receives an arbitrry number of Unspent Transaction Outputs (UTxO) and deliver a specified number of UTxOs.
 
 A rule of thumb with Transactions is that the amount of inputs values has to be always equals to the amounts of output values. 
 
