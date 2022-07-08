@@ -23,7 +23,7 @@ The code starts with a series of "pragma" statements to specify some extra-lingu
 ```
 
 ---
-## Module declaration
+## Module declaration and imports
 
 Next, the name of the Haskell module and a series of library imports used in the code
 ```haskell
