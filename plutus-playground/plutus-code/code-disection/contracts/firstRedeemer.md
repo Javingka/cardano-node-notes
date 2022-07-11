@@ -61,7 +61,9 @@ The following code is supposed to be stored into the blockchain. So it is called
 ```
 
 ---
+
 <div style="text-align: right">  </div>
+
 ### goodRedeemer
 This function will be used to generate a Verificator function aimed to execute a transaction validation. It will pass only if the second parameter (the redeemer) receives the Integer number 42 
 ```haskell
@@ -86,4 +88,17 @@ validator = mkValidatorScript $$(PlutusTx.compile [|| goodRedeemer ||])
 ```
 
 ---
+
+### valHash
+This is the hash of the validator
+```haskell
+valHash :: Ledger.ValidatorHash
+valHash = Scripts.validatorHash validator  
+```
+
+The function to get the address of the script within the blockchain
+```haskell
+scrAddress :: Ledger.Address
+scrAddress = scriptAddress validator
+```
 

@@ -8,7 +8,7 @@ Inputs are unspent transaction outputs (UTxOs) from other previous transactions.
 
 Assets on the ledger are stored in unspent outputs
 
-The unspent transaction output (UTxO) is specified by an address (public key hash) and a value,
+The unspent transaction output (UTxO) is specified by an address (such aaddress is given by the hash of the public key) and a value,
 such address specify what transactions can unlock the value (output) and used as an input
 
 Unspent transactions outputs are immutable

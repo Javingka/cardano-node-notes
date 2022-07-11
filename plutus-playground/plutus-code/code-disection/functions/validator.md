@@ -5,18 +5,19 @@ validator :: Validator
 validator = mkValidatorScript $$(PlutusTx.compile [|| alwaysSucceeds ||])  --2nd example change this to alwaysFails
 ```
 
-This function creates a function called **validator**
+This Haskell function works as a variable that store a function called **validator** wich ultimately is a script that will live at the blockchain in PlutusCore
 
-The `$$(...)`  pattern seems to be the encapsulation of a  [[haskell template|haskell template]] execution.
+The `$$(...)`  pattern seems to be the encapsulation of a  [[haskell template|haskell template]] execution. 
+  We are asking the compiler to write the code for the validator function at compile time based on our mkValidator function, and then proceed with the normal compilation
 
 What specific type of [[haskell template|haskell template]] is? 
 	Why double brackets? because is the format of Oxford Brackets, 
 
 Anyway, the haskell template is aimed to create code on compiling time. Is meta-programing, code to write code.
 
-So what we are coding is a function created to validate an input as true or false. <- is this assertion true?
+So what we are coding is a function created to validate an input, in the case it do validates do nothing (hence the () datatype) otherwise through an error accordingly
 
-The name of the function is **alwaysSucceeds** , and is a very basic function  
+The name of the function is **mkValidatorScript** , and is a very basic function  
 
 ```haskell
 mkValidatorScript :: CompiledCode (BuiltinData -> BuiltinData -> BuiltinData -> ()) -> Validator

@@ -46,9 +46,7 @@ valHash :: Ledger.ValidatorHash
 valHash = Scripts.validatorHash validator  
 
 scrAddress :: Ledger.Address
-scrAddress = scriptAddress validator --You apply scriptAddress to the validator and you get the script address on the blockchain
-
-
+scrAddress = scriptAddress valHash 
 
 --THE OFFCHAIN CODE
 

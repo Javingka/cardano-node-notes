@@ -3,8 +3,9 @@
 
 From what we learn from cardano-cli operations. A Cardano Address is a unique and identifiable 'place'.
 
-A script address represents one of the two ways the UTXO model is extended EUTXO model.
-In UTXO model, a transaction can use an [[utxo|unspent transaction output]] as input if unlock the value using the right signature.
+A script address represents one of the two ways the UTXO model is extended to EUTXO model.
+
+In UTXO model, a transaction can use a [[utxo|unspent transaction output]] as input if unlock the value using the right signature.
 But, already in EUTXO model, the address specifying the UTXO can contain arbitrary logic in the form of scripts
 
 In order to build an Address we need an address key pair:
